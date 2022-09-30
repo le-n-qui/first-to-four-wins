@@ -33,12 +33,10 @@ def random_grid():
         for col_pos in range(COL_SIZE):
             # Fill in at each column position 
             # with a random value
-            
-            # row.append(random.randint(1, 5))
             row.append(generate_value())
         # place the filled row into grid
         grid.append(row)
-
+    # return the random grid
     return grid
 
 
@@ -48,19 +46,19 @@ def random_grid():
 # restart the procedure
 def generate_value():
     # If one head, return 1
-    if(random.randint(0, 1) == 1):
+    if random.randint(0, 1) == 1:
         return 1
     # If one tail + one head, return 2
-    elif(random.randint(0, 1) == 1):
+    elif random.randint(0, 1) == 1:
         return 2
     # If one tail + two heads, return 3
-    elif(random.randint(0, 1) == 1):
+    elif random.randint(0, 1) == 1:
         return 3
     # If one tail + three heads, return 4
-    elif(random.randint(0, 1) == 1):
+    elif random.randint(0, 1) == 1:
         return 4
     # If one tail + four heads, return 5
-    elif(random.randint(0, 1) == 1):
+    elif random.randint(0, 1) == 1:
         return 5
     # If all tails, run the algorithm again
     else:
@@ -98,14 +96,14 @@ def hill_climbing(grid, max_number_of_steps, max_number_of_restarts=0):
     
 
     # This loop continues until no more steps are allowed
-    while(steps_remaining > 0):
+    while steps_remaining > 0:
         # Grab the x, y, value variables of the highest value neighbor
         successor_x, successor_y, successor_value = find_highest_value_neighbor(grid, current_x, current_y, current_value)
         
         # If the neighbor's value is larger than the current value, update 
         # all current values to the successor values and reduce step count
         # by 1
-        if(successor_value > current_value): 
+        if successor_value > current_value: 
             # Print statements for debugging
             print("Step Made")
             print("Old Value")
@@ -135,7 +133,7 @@ def hill_climbing(grid, max_number_of_steps, max_number_of_restarts=0):
             # If we have restarts remaining, reduce the number of remaining
             # restarts by 1 and call the hill climbing algorithm again with
             # 1 less restart
-            if(restarts_remaining > 0):
+            if restarts_remaining > 0:
                 # Print statements for debugging
                 print("Restarts Left")
                 print(restarts_remaining)
@@ -146,7 +144,7 @@ def hill_climbing(grid, max_number_of_steps, max_number_of_restarts=0):
                 
                 # If the value found from the restart is higher than the found max of the 
                 # pre-reset run, update the value
-                if(found_max > global_max):
+                if found_max > global_max:
                     global_max = found_max
                 else:
                     pass
@@ -225,9 +223,9 @@ def local_beam_search(grid, max_number_of_steps):
         highest_value = 0
         for entry in list:
             # print(entry)
-            if(entry[2] > highest_value):
+            if entry[2] > highest_value:
                 highest_value = entry[2]
-        if(highest_value == 5):
+        if highest_value == 5:
             return highest_value
 
         # Else, there is no 5. Find the two best children and repeat
@@ -239,12 +237,12 @@ def local_beam_search(grid, max_number_of_steps):
         highest_value1 = highest_value
 
         # While the highest possible score value is larger than 0
-        while(highest_value1 > 0):
+        while highest_value1 > 0:
             # Check the score values for all the children
             # If a child is found with a score matching the highest possible
             # score, update the x,y,value variables for the first local beam
             for entry in list:
-                if(entry[2] == highest_value1):
+                if entry[2] == highest_value1:
                     current_x1 = entry[0]
                     current_y1 = entry[1]
                     current_value1 = entry[2]
@@ -273,12 +271,12 @@ def local_beam_search(grid, max_number_of_steps):
         highest_value2 = highest_value
 
         # While the highest possible score value is larger than 0
-        while(highest_value2 > 0):
+        while highest_value2 > 0:
             # Check the score values for all the children
             # If a child is found with a score matching the highest possible
             # score, update the x,y,value variables for the first local beam
             for entry in list:
-                if(entry[2] == highest_value2):
+                if entry[2] == highest_value2:
                     current_x2 = entry[0]
                     current_y2 = entry[1]
                     current_value2 = entry[2]
@@ -288,7 +286,7 @@ def local_beam_search(grid, max_number_of_steps):
 
                     # If the x,y,value variables of the second beam are different from
                     # those of the first beam, break out of the loop
-                    if(current_x1 != current_x2 and current_y1 != current_y2 and current_value1 != current_value2):   
+                    if current_x1 != current_x2 and current_y1 != current_y2 and current_value1 != current_value2:   
                         # Print statements for debugging
                         print("New X2")
                         print(current_x2)
@@ -325,7 +323,7 @@ def local_beam_search(grid, max_number_of_steps):
     print("No More Steps")
 
     # Return the larger of the two current values
-    if(current_value1 > current_value2):
+    if current_value1 > current_value2:
         return current_value1
     else:
         return current_value2
@@ -334,12 +332,12 @@ def local_beam_search(grid, max_number_of_steps):
 def find_all_neighbors(grid, current_x, current_y, neighbors_list):
 
     # Looping through all values +/- 1 of the input x,y values
-    for x in ([current_x - 1, current_x, current_x + 1]):
-        for y in ([current_y - 1, current_y, current_y + 1]):
+    for x in [current_x - 1, current_x, current_x + 1]:
+        for y in [current_y - 1, current_y, current_y + 1]:
 
             # If the chosen x,y values are in bounds, add them to the
             # list of neighbors
-            if(x >= 0 and x <= 7 and y >= 0 and y <= 7):
+            if x >= 0 and x <= 7 and y >= 0 and y <= 7:
                 list = []
                 list.append(x)
                 list.append(y)
@@ -351,16 +349,19 @@ def find_all_neighbors(grid, current_x, current_y, neighbors_list):
 
 # Show agent on grid
 def show_agent_progress(grid, current_x, current_y):
+    # Represent agent with letter X
+    # at point (current_x, current_y)
     grid[current_x][current_y] = "X"
+    # loop through the outer list
     for row in grid:
+    	# print each inner list
         print(row)
+    # print a newline
     print()
 
+#
 # Simulation code below
 #
-# Try changing the seed of the random object and see the final values change!
-#
-
 
 # Hill Climbing
 print("----------------------------------------------------------------------------------")
@@ -373,7 +374,7 @@ for i in range(10):
     print()
     example_grid = random_grid()
     for row in example_grid:
-	    print(row)
+        print(row)
     value = hill_climbing(example_grid, 20)
 
 print("Hill Climbing - Result for Experiment #1")
