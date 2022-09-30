@@ -1,4 +1,5 @@
 # import libraries
+import copy
 import random
 from threading import local
 
@@ -67,6 +68,7 @@ def generate_value():
 
 
 def hill_climbing(grid, max_number_of_steps, max_number_of_restarts):
+    copy_grid = copy.deepcopy(grid)
     # Select a random x and y as the starting point
     current_x = random.randint(0, 7)
     current_y = random.randint(0, 7)
@@ -83,6 +85,8 @@ def hill_climbing(grid, max_number_of_steps, max_number_of_restarts):
     print(current_y)
     print("Current Value")
     print(current_value)
+
+    show_agent_progress(copy_grid, current_x, current_y)
 
     # Create variables that mark how many steps / restarts are left
     steps_remaining = max_number_of_steps
@@ -110,6 +114,8 @@ def hill_climbing(grid, max_number_of_steps, max_number_of_restarts):
             current_value = successor_value
             global_max = successor_value
             steps_remaining -= 1
+
+            show_agent_progress(copy_grid, current_x, current_y)
 
             # Print statements for debugging
             print("Steps Remaining")
@@ -339,6 +345,11 @@ def find_all_neighbors(grid, current_x, current_y, neighbors_list):
     # Return the highest value neighbor that is found
     return list
 
+# Show agent on grid
+def show_agent_progress(grid, current_x, current_y):
+    grid[current_x][current_y] = "X"
+    for row in grid:
+        print(row)
 
 # Running code
 print('GRID STATUS: ')
