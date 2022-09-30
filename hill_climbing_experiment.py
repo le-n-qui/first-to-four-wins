@@ -1,5 +1,6 @@
 # import libraries
 import random
+from threading import local
 
 # set a seed value
 # so random values
@@ -171,6 +172,172 @@ def find_highest_value_neighbor(grid, current_x, current_y, current_value):
     return successor_x, successor_y, successor_value
 
 
+def local_beam_search(grid, max_number_of_steps):
+    # Select two pairs of random x and y values as the starting points
+    # for the two beams
+    current_x1 = random.randint(0, 7)
+    current_y1 = random.randint(0, 7)
+    current_x2 = random.randint(0, 7)
+    current_y2 = random.randint(0, 7)
+
+    # Store the value of the randomly chosen x,y into both
+    # the current value and the global max
+    current_value1 = grid[current_x1][current_y1]
+    current_value2 = grid[current_x2][current_y2]
+
+    # Print statements for debugging
+    print("Chosen X1")
+    print(current_x1)
+    print("Chosen Y1")
+    print(current_y1)
+    print("Current Value 1")
+    print(current_value1)
+    print("Chosen X2")
+    print(current_x2)
+    print("Chosen Y2")
+    print(current_y2)
+    print("Current Value 2")
+    print(current_value2)
+    print()
+
+    # Create variable that marks how many steps are left
+    steps_remaining = max_number_of_steps
+
+    # This loop continues until no more steps are allowed
+    while(steps_remaining > 0):
+        # Create a list of all the possible neighbors
+        list = []
+        find_all_neighbors(grid, current_x1, current_y1, list)
+        find_all_neighbors(grid, current_x2, current_y2, list)
+
+        # If any of the neighbors have a score of 5, return 5 for the 
+        # entire algorithm
+        highest_value = 0
+        for entry in list:
+            print(entry)
+            if(entry[2] > highest_value):
+                highest_value = entry[2]
+        if(highest_value == 5):
+            return highest_value
+
+        # Else, there is no 5. Find the two best children and repeat
+        
+        # Print statements for debugging
+        print("Looking For First Highest Child")
+
+        # Create a variable that stores the highest variable
+        highest_value1 = highest_value
+
+        # While the highest possible score value is larger than 0
+        while(highest_value1 > 0):
+            # Check the score values for all the children
+            # If a child is found with a score matching the highest possible
+            # score, update the x,y,value variables for the first local beam
+            for entry in list:
+                if(entry[2] == highest_value1):
+                    current_x1 = entry[0]
+                    current_y1 = entry[1]
+                    current_value1 = entry[2]
+
+                    # Print statements for debugging
+                    print("Found First Highest Child")
+                    print("New X1")
+                    print(current_x1)
+                    print("New Y1")
+                    print(current_y1)
+                    print("New Value 1")
+                    print(current_value1)
+
+                    # After updating variables, break out of the loop
+                    highest_value1 = 0
+                    break
+            
+            # If we loop again, decrement the highest possible child score
+            highest_value1 -= 1
+
+
+        # Print statements for debugging
+        print("Looking For Second Highest Child")
+        
+        # Create a variable that stores the highest variable
+        highest_value2 = highest_value
+
+        # While the highest possible score value is larger than 0
+        while(highest_value2 > 0):
+            # Check the score values for all the children
+            # If a child is found with a score matching the highest possible
+            # score, update the x,y,value variables for the first local beam
+            for entry in list:
+                if(entry[2] == highest_value2):
+                    current_x2 = entry[0]
+                    current_y2 = entry[1]
+                    current_value2 = entry[2]
+
+                    # Print statements for debugging
+                    print("Found Second Highest Child")
+
+                    # If the x,y,value variables of the second beam are different from
+                    # those of the first beam, break out of the loop
+                    if(current_x1 != current_x2 and current_y1 != current_y2 and current_value1 != current_value2):   
+                        # Print statements for debugging
+                        print("New X2")
+                        print(current_x2)
+                        print("New Y2")
+                        print(current_y2)
+                        print("New Value 2")
+                        print(current_value2)
+
+                        # Breaking out of the loop
+                        highest_value2 = 0
+                        break
+
+                    # If we make it to here, the second beam variables we found
+                    # are invalid and cannot be used. Must loop
+                    print("False Second Highest Child Found")
+
+            # If we loop again, decrement the highest possible child score
+            highest_value2 -= 1
+        
+        # Once two valid children are found, decrement the possible steps before
+        # looping again
+        steps_remaining -= 1
+
+        # Print statements for debugging
+        print("Step Taken")
+        print("Steps Remaining")
+        print(steps_remaining)
+        print("______________________________________________________________________")
+
+
+    # If we make it this far, we are out of steps
+
+    # Print statements for debugging
+    print("No More Steps")
+
+    # Return the larger of the two current values
+    if(current_value1 > current_value2):
+        return current_value1
+    else:
+        return current_value2
+
+
+def find_all_neighbors(grid, current_x, current_y, neighbors_list):
+
+    # Looping through all values +/- 1 of the input x,y values
+    for x in ([current_x - 1, current_x, current_x + 1]):
+        for y in ([current_y - 1, current_y, current_y + 1]):
+
+            # If the chosen x,y values are in bounds, add them to the
+            # list of neighbors
+            if(x >= 0 and x <= 7 and y >= 0 and y <= 7):
+                list = []
+                list.append(x)
+                list.append(y)
+                list.append(grid[x][y])
+                neighbors_list.append(list)
+    
+    # Return the highest value neighbor that is found
+    return list
 
 
 # Running code
@@ -181,7 +348,31 @@ example_grid = random_grid()
 for row in example_grid:
 	print(row)
 
+
+#
+# Try changing the seed of the random object and see the final values change!
+#
+
+
+# Hill Climbing
+print("----------------------------------------------------------------------------------")
+print("Hill Climbing Start")
+
 # Number of steps / restarts are changed by changing the input values
 value = hill_climbing(example_grid, 10, 2)
-print("Final Value")
+print("Hill Climbing Result")
+print(value)
+print()
+print()
+
+
+
+
+# Local Beam Search
+print("----------------------------------------------------------------------------------")
+print("Local Beam Start")
+
+
+value = local_beam_search(example_grid, 20)
+print("Local Beam Result")
 print(value)
