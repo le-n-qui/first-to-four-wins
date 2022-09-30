@@ -351,7 +351,7 @@ def find_all_neighbors(grid, current_x, current_y, neighbors_list):
 def show_agent_progress(grid, current_x, current_y):
     # Represent agent with letter X
     # at point (current_x, current_y)
-    grid[current_x][current_y] = "X"
+    grid[current_x][current_y] = 'X'
     # loop through the outer list
     for row in grid:
     	# print each inner list
@@ -364,8 +364,8 @@ def show_agent_progress(grid, current_x, current_y):
 #
 
 # Hill Climbing
-print("----------------------------------------------------------------------------------")
-print("Hill Climbing Experiment #1")
+print('----------------------------------------------------------------------------------')
+print('Hill Climbing Experiment #1')
 print()
 
 for i in range(10):
@@ -377,8 +377,23 @@ for i in range(10):
         print(row)
     value = hill_climbing(example_grid, 20)
 
-print("Hill Climbing - Result for Experiment #1")
+print('Hill Climbing - End of Simulations for Experiment #1')
 
+print()
+print('----------------------------------------------------------------------------------')
+print('Hill Climbing Experiment #2')
+print()
+
+for i in range(10):
+    print('GRID {} LAYOUT: '.format(i+1))
+    print('---------------')
+    print()
+    new_grid = random_grid()
+    for row in new_grid:
+        print(row)
+    value = hill_climbing(new_grid, 10, 1)
+
+print('Hill Climbing - End of Simulations for Experiement #2')
 print()
 print()
 
@@ -386,10 +401,10 @@ print()
 
 
 # Local Beam Search
-print("----------------------------------------------------------------------------------")
-print("Local Beam Start")
+print('----------------------------------------------------------------------------------')
+print('Local Beam Start')
 
 
-value = local_beam_search(example_grid, 20)
+#value = local_beam_search(example_grid, 20)
 print("Local Beam Result")
 #print(value)
