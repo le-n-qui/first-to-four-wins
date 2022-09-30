@@ -42,9 +42,9 @@ def random_grid():
     return grid
 
 
-# flip an unbiased coin, if its heads treat it as a 1, 
-# it is tails, flip the coin again and if its heads treat it as a 2, 
-# if its tails flip the coin again ... -- If you get five tails in a row, 
+# flip an unbiased coin: if it is heads treat it as a 1, 
+# if it is tails, flip the coin again and if it is heads, treat it as a 2. 
+# if it is tails, flip the coin again ... -- If you get five tails in a row, 
 # restart the procedure
 def generate_value():
     # If one head, return 1
@@ -67,8 +67,10 @@ def generate_value():
         return generate_value()
 
 
-def hill_climbing(grid, max_number_of_steps, max_number_of_restarts):
+def hill_climbing(grid, max_number_of_steps, max_number_of_restarts=0):
+    # create a copy of the grid
     copy_grid = copy.deepcopy(grid)
+
     # Select a random x and y as the starting point
     current_x = random.randint(0, 7)
     current_y = random.randint(0, 7)
@@ -86,6 +88,8 @@ def hill_climbing(grid, max_number_of_steps, max_number_of_restarts):
     print("Current Value")
     print(current_value)
 
+    print('CURRENT PROGRESS: ')
+    print('-----------------')
     show_agent_progress(copy_grid, current_x, current_y)
 
     # Create variables that mark how many steps / restarts are left
@@ -163,8 +167,8 @@ def find_highest_value_neighbor(grid, current_x, current_y, current_value):
     successor_value = current_value
 
     # Looping through all values +/- 1 of the input x,y values
-    for x in ([current_x - 1, current_x, current_x + 1]):
-        for y in ([current_y - 1, current_y, current_y + 1]):
+    for x in [current_x - 1, current_x, current_x + 1]:
+        for y in [current_y - 1, current_y, current_y + 1]:
 
             # If the chosen x,y values are in bounds and the value at those
             # coordinates is larger than the successor value, update the 
@@ -192,19 +196,19 @@ def local_beam_search(grid, max_number_of_steps):
     current_value2 = grid[current_x2][current_y2]
 
     # Print statements for debugging
-    print("Chosen X1")
-    print(current_x1)
-    print("Chosen Y1")
-    print(current_y1)
-    print("Current Value 1")
-    print(current_value1)
-    print("Chosen X2")
-    print(current_x2)
-    print("Chosen Y2")
-    print(current_y2)
-    print("Current Value 2")
-    print(current_value2)
-    print()
+    # print("Chosen X1")
+    # print(current_x1)
+    # print("Chosen Y1")
+    # print(current_y1)
+    # print("Current Value 1")
+    # print(current_value1)
+    # print("Chosen X2")
+    # print(current_x2)
+    # print("Chosen Y2")
+    # print(current_y2)
+    # print("Current Value 2")
+    # print(current_value2)
+    # print()
 
     # Create variable that marks how many steps are left
     steps_remaining = max_number_of_steps
@@ -220,7 +224,7 @@ def local_beam_search(grid, max_number_of_steps):
         # entire algorithm
         highest_value = 0
         for entry in list:
-            print(entry)
+            # print(entry)
             if(entry[2] > highest_value):
                 highest_value = entry[2]
         if(highest_value == 5):
@@ -350,16 +354,9 @@ def show_agent_progress(grid, current_x, current_y):
     grid[current_x][current_y] = "X"
     for row in grid:
         print(row)
+    print()
 
-# Running code
-print('GRID STATUS: ')
-print('-----------')
-print()
-example_grid = random_grid()
-for row in example_grid:
-	print(row)
-
-
+# Simulation code below
 #
 # Try changing the seed of the random object and see the final values change!
 #
@@ -367,12 +364,20 @@ for row in example_grid:
 
 # Hill Climbing
 print("----------------------------------------------------------------------------------")
-print("Hill Climbing Start")
+print("Hill Climbing Experiment #1")
+print()
 
-# Number of steps / restarts are changed by changing the input values
-value = hill_climbing(example_grid, 10, 2)
-print("Hill Climbing Result")
-print(value)
+for i in range(10):
+    print('GRID {} LAYOUT: '.format(i+1))
+    print('---------------')
+    print()
+    example_grid = random_grid()
+    for row in example_grid:
+	    print(row)
+    value = hill_climbing(example_grid, 20)
+
+print("Hill Climbing - Result for Experiment #1")
+
 print()
 print()
 
@@ -386,4 +391,4 @@ print("Local Beam Start")
 
 value = local_beam_search(example_grid, 20)
 print("Local Beam Result")
-print(value)
+#print(value)
