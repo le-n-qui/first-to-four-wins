@@ -3,6 +3,11 @@ import copy
 import random
 from threading import local
 
+from hill_climbing_experiment import random_grid
+from hill_climbing_experiment import generate_value
+from hill_climbing_experiment import find_all_neighbors
+from hill_climbing_experiment import find_highest_value_neighbor
+
 # set a seed value
 # so random values
 # do not change each
@@ -15,54 +20,6 @@ ROW_SIZE = 8
 # Column size
 COL_SIZE = 8
 
-
-def random_grid():
-    # create a ROW x COL grid
-    # i.e. a list of 
-    # of ROW lists which
-    # will contain COL elements
-    grid = []
-
-    # Populate grid with
-    # random values from
-    # 1 - 5
-    for row_pos in range(ROW_SIZE):
-        # create a list for row_i
-        row = [] 
-        # column by column
-        for col_pos in range(COL_SIZE):
-            # Fill in at each column position 
-            # with a random value
-            row.append(generate_value())
-        # place the filled row into grid
-        grid.append(row)
-    # return the random grid
-    return grid
-
-
-# flip an unbiased coin: if it is heads treat it as a 1, 
-# if it is tails, flip the coin again and if it is heads, treat it as a 2. 
-# if it is tails, flip the coin again ... -- If you get five tails in a row, 
-# restart the procedure
-def generate_value():
-    # If one head, return 1
-    if random.randint(0, 1) == 1:
-        return 1
-    # If one tail + one head, return 2
-    elif random.randint(0, 1) == 1:
-        return 2
-    # If one tail + two heads, return 3
-    elif random.randint(0, 1) == 1:
-        return 3
-    # If one tail + three heads, return 4
-    elif random.randint(0, 1) == 1:
-        return 4
-    # If one tail + four heads, return 5
-    elif random.randint(0, 1) == 1:
-        return 5
-    # If all tails, run the algorithm again
-    else:
-        return generate_value()
 
 def simulated_annealing(grid, max_number_of_steps, max_number_of_restarts=0):
     # create a copy of the grid
@@ -95,61 +52,66 @@ def simulated_annealing(grid, max_number_of_steps, max_number_of_restarts=0):
 
     # This loop continues until no more steps are allowed
     while steps_remaining > 0:
-        # Create a list of all the possible neighbors
-        list = []
-        find_all_neighbors(grid, current_x, current_y, list)
-
-        # Calculate the probabilities
-
-        # Sum up the values of the neighbors (S)
-        
-
-        # Assign the probabilities (V/S)
-
-        # Move to the next square with the highest probability
+        # Grab the x, y, value variables of the highest value neighbor
+        successor_x, successor_y, successor_value = find_highest_value_neighbor(grid, current_x, current_y, current_value)
 
 
-def find_highest_value_neighbor(grid, current_x, current_y, current_value):
-    
-    # Initialize all successor variables to the input"
-    # current x,y,value variables
-    successor_x = current_x
-    successor_y = current_y
-    successor_value = current_value
-
-    # Looping through all values +/- 1 of the input x,y values
-    for x in [current_x - 1, current_x, current_x + 1]:
-        for y in [current_y - 1, current_y, current_y + 1]:
-
-            # If the chosen x,y values are in bounds and the value at those
-            # coordinates is larger than the successor value, update the 
-            # successor x, y, value values
-            if(x >= 0 and x <= 7 and y >= 0 and y <= 7 and grid[x][y] > successor_value):
-                successor_x = x
-                successor_y = y
-                successor_value = grid[x][y]
-    
-    # Return the highest value neighbor that is found
-    return successor_x, successor_y, successor_value
+        # If the neighbor's value is 0,
+        # return the current state
+        if successor_value == 0:
+            global_max = current_value
 
 
-def find_all_neighbors(grid, current_x, current_y, neighbors_list):
+        # If the neighbor's value is larger than the current value, update 
+        # all current values to the successor values and reduce step count
+        # by 1
+        elif successor_value > current_value: 
+            # Create a list of all the possible neighbors
+            neighbors_list=[]
+            find_all_neighbors(grid, current_x, current_y, neighbors_list)
 
-    # Looping through all values +/- 1 of the input x,y values
-    for x in [current_x - 1, current_x, current_x + 1]:
-        for y in [current_y - 1, current_y, current_y + 1]:
+            # Random
 
-            # If the chosen x,y values are in bounds, add them to the
-            # list of neighbors
-            if x >= 0 and x <= 7 and y >= 0 and y <= 7:
-                list = []
-                list.append(x)
-                list.append(y)
-                list.append(grid[x][y])
-                neighbors_list.append(list)
-    
-    # Return the highest value neighbor that is found
-    return list
+            # if (DeltaE < 0):
+            current_x = successor_x
+            current_y = successor_y
+            current_value = successor_value
+            global_max = successor_value
+            steps_remaining -= 1
+
+
+        # Else, we are out of steps
+        else:
+            # Print statements for debugging
+            print("No More Steps")
+            print("Local Max")
+            print(current_value)
+
+            # If we have restarts remaining, reduce the number of remaining
+            # restarts by 1 and call the hill climbing algorithm again with
+            # 1 less restart
+            if restarts_remaining > 0:
+                # Print statements for debugging
+                print("Restarts Left")
+                print(restarts_remaining)
+
+                restarts_remaining -= 1
+                # Store the maximum found from the restart into a variable
+                found_max = simulated_annealing(grid, max_number_of_steps, restarts_remaining)
+                
+                # If the value found from the restart is higher than the found max of the 
+                # pre-reset run, update the value
+                if found_max > global_max:
+                    global_max = found_max
+                else:
+                    pass
+            else:
+                # Print statements for debugging
+                print("No More Restarts")
+            # Else, we have no more steps and no more restarts
+            # Return the highest found value from all runs   
+            return global_max
+
 
 
 # Show agent on grid

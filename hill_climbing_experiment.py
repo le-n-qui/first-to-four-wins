@@ -345,7 +345,7 @@ def find_all_neighbors(grid, current_x, current_y, neighbors_list):
                 neighbors_list.append(list)
     
     # Return the highest value neighbor that is found
-    return list
+    return neighbors_list
 
 # Show agent on grid
 def show_agent_progress(grid, current_x, current_y):
