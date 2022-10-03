@@ -368,6 +368,7 @@ print('-------------------------------------------------------------------------
 print('Hill Climbing Experiment #1')
 print()
 
+experiment_one_number_of_successes = 0
 for i in range(10):
     print('GRID {} LAYOUT: '.format(i+1))
     print('---------------')
@@ -376,6 +377,9 @@ for i in range(10):
     for row in example_grid:
         print(row)
     value = hill_climbing(example_grid, 20)
+    if(value == 5):
+        experiment_one_number_of_successes += 1
+
 
 print('Hill Climbing - End of Simulations for Experiment #1')
 
@@ -384,6 +388,8 @@ print('-------------------------------------------------------------------------
 print('Hill Climbing Experiment #2')
 print()
 
+
+experiment_two_number_of_successes = 0
 for i in range(10):
     print('GRID {} LAYOUT: '.format(i+1))
     print('---------------')
@@ -392,6 +398,8 @@ for i in range(10):
     for row in new_grid:
         print(row)
     value = hill_climbing(new_grid, 10, 1)
+    if(value == 5):
+        experiment_two_number_of_successes += 1
 
 print('Hill Climbing - End of Simulations for Experiement #2')
 print()
@@ -408,3 +416,18 @@ print('Local Beam Start')
 #value = local_beam_search(example_grid, 20)
 print("Local Beam Result")
 #print(value)
+print()
+print()
+
+
+# Final Results
+print('----------------------------------------------------------------------------------')
+print('Final Results')
+print("Experiment 1 # of Successes:")
+print(experiment_one_number_of_successes)
+print("Experiment 1 # Success Rate:")
+print(experiment_one_number_of_successes * 10, end ="%\n")
+print("Experiment 2 # of Successes:")
+print(experiment_two_number_of_successes)
+print("Experiment 2 # Success Rate:")
+print(experiment_two_number_of_successes * 10, end ="%")

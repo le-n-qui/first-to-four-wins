@@ -1288,3 +1288,15 @@ Hill Climbing - End of Simulations for Experiement #2
 ----------------------------------------------------------------------------------
 Local Beam Start
 Local Beam Result
+
+
+----------------------------------------------------------------------------------
+Final Results
+Experiment 1 # of Successes:
+2
+Experiment 1 # Success Rate:
+20%
+Experiment 2 # of Successes:
+6
+Experiment 2 # Success Rate:
+60%
