@@ -86,8 +86,8 @@ def hill_climbing(grid, max_number_of_steps, max_number_of_restarts=0):
     print("Current Value")
     print(current_value)
 
-    print('CURRENT PROGRESS: ')
-    print('-----------------')
+    print("CURRENT PROGRESS: ")
+    print("-----------------")
     show_agent_progress(copy_grid, current_x, current_y)
 
     # Create variables that mark how many steps / restarts are left
@@ -212,7 +212,7 @@ def local_beam_search(grid, max_number_of_steps):
     steps_remaining = max_number_of_steps
 
     # This loop continues until no more steps are allowed
-    while(steps_remaining > 0):
+    while steps_remaining > 0:
         # Create a list of all the possible neighbors
         list = []
         find_all_neighbors(grid, current_x1, current_y1, list)
@@ -371,15 +371,15 @@ def show_agent_progress(grid, current_x, current_y):
 #
 
 # Hill Climbing 20 Steps
-print('----------------------------------------------------------------------------------')
-print('Experiment #1 : Hill Climbing 20 Steps')
+print("----------------------------------------------------------------------------------")
+print("Experiment #1 : Hill Climbing 20 Steps")
 print()
 
 
 experiment_one_number_of_successes = 0
 for i in range(10):
-    print('GRID {} LAYOUT: '.format(i+1))
-    print('---------------')
+    print("GRID {} LAYOUT: ".format(i+1))
+    print("---------------")
     print()
     example_grid = random_grid()
     for row in example_grid:
@@ -389,7 +389,7 @@ for i in range(10):
         experiment_one_number_of_successes += 1
 
 
-print('End of Simulations for Experiment #1 : Hill Climbing 20 Steps')
+print("End of Simulations for Experiment #1 : Hill Climbing 20 Steps")
 print()
 print()
 
@@ -397,15 +397,15 @@ print()
 
 
 # Hill Climbing 10 Steps 1 Restart
-print('----------------------------------------------------------------------------------')
-print('Experiment #2 : Hill Climbing 10 Steps & 1 Restart')
+print("----------------------------------------------------------------------------------")
+print("Experiment #2 : Hill Climbing 10 Steps & 1 Restart")
 print()
 
 
 experiment_two_number_of_successes = 0
 for i in range(10):
-    print('GRID {} LAYOUT: '.format(i+1))
-    print('---------------')
+    print("GRID {} LAYOUT: ".format(i+1))
+    print("---------------")
     print()
     new_grid = random_grid()
     for row in new_grid:
@@ -415,7 +415,7 @@ for i in range(10):
         experiment_two_number_of_successes += 1
 
 
-print('End of Simulations for Experiment #2 : Hill Climbing 10 Steps & 1 Restart')
+print("End of Simulations for Experiment #2 : Hill Climbing 10 Steps & 1 Restart")
 print()
 print()
 
@@ -423,8 +423,8 @@ print()
 
 
 # Local Beam Search With 2 Beams & 20 Steps
-print('----------------------------------------------------------------------------------')
-print('Experiment #3 : Local Beam Search With 2 Beams & 20 Steps')
+print("----------------------------------------------------------------------------------")
+print("Experiment #3 : Local Beam Search With 2 Beams & 20 Steps")
 print()
 
 
@@ -444,8 +444,8 @@ print()
 
 
 # Simulated Annealing Modification
-print('----------------------------------------------------------------------------------')
-print('Experiment #4 : Simulated Annealing Modification')
+print("----------------------------------------------------------------------------------")
+print("Experiment #4 : Simulated Annealing Modification")
 print()
 
 
@@ -465,8 +465,8 @@ print()
 
 
 # Final Results
-print('----------------------------------------------------------------------------------')
-print('Final Results')
+print("----------------------------------------------------------------------------------")
+print("Final Results")
 print("Experiment 1 : Hill Climbing 20 Steps : # of Successes:")
 print(experiment_one_number_of_successes)
 print("Experiment 1 # Hill Climbing 20 Steps : Success Rate:")
