@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------
-Hill Climbing Experiment #1
+Experiment #1 : Hill Climbing 20 Steps
 
 GRID 1 LAYOUT: 
 ---------------
@@ -449,10 +449,11 @@ No More Steps
 Local Max
 2
 No More Restarts
-Hill Climbing - End of Simulations for Experiment #1
+End of Simulations for Experiment #1 : Hill Climbing 20 Steps
+
 
 ----------------------------------------------------------------------------------
-Hill Climbing Experiment #2
+Experiment #2 : Hill Climbing 10 Steps & 1 Restart
 
 GRID 1 LAYOUT: 
 ---------------
@@ -1282,21 +1283,36 @@ No More Steps
 Local Max
 2
 No More Restarts
-Hill Climbing - End of Simulations for Experiement #2
+End of Simulations for Experiment #2 : Hill Climbing 10 Steps & 1 Restart
 
 
 ----------------------------------------------------------------------------------
-Local Beam Start
-Local Beam Result
+Experiment #3 : Local Beam Search With 2 Beams & 20 Steps
+
+End of Simulations for Experiment #3 : Local Beam Search With 2 Beams & 20 Steps
+
+
+----------------------------------------------------------------------------------
+Experiment #4 : Simulated Annealing Modification
+
+End of Simulations for Experiment #4 : Simulated Annealing Modification
 
 
 ----------------------------------------------------------------------------------
 Final Results
-Experiment 1 # of Successes:
+Experiment 1 : Hill Climbing 20 Steps : # of Successes:
 2
-Experiment 1 # Success Rate:
+Experiment 1 # Hill Climbing 20 Steps : Success Rate:
 20%
-Experiment 2 # of Successes:
+Experiment 2 : Hill Climbing 10 Steps & 1 Restart : # of Successes:
 6
-Experiment 2 # Success Rate:
+Experiment 2 : Hill Climbing 10 Steps & 1 Restart : # Success Rate:
 60%
+Experiment 3 : Local Beam Search With 2 Beams & 20 Steps : # of Successes:
+0
+Experiment 3 : Local Beam Search With 2 Beams & 20 Steps : # Success Rate:
+0%
+Experiment 4 : Simulated Annealing Modification : # of Successes:
+0
+Experiment 4 : Simulated Annealing Modification : # Success Rate:
+0%

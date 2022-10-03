@@ -359,14 +359,22 @@ def show_agent_progress(grid, current_x, current_y):
     # print a newline
     print()
 
+
+
+
+
+
+
+
 #
-# Simulation code below
+# Simulation Code
 #
 
-# Hill Climbing
+# Hill Climbing 20 Steps
 print('----------------------------------------------------------------------------------')
-print('Hill Climbing Experiment #1')
+print('Experiment #1 : Hill Climbing 20 Steps')
 print()
+
 
 experiment_one_number_of_successes = 0
 for i in range(10):
@@ -381,11 +389,16 @@ for i in range(10):
         experiment_one_number_of_successes += 1
 
 
-print('Hill Climbing - End of Simulations for Experiment #1')
-
+print('End of Simulations for Experiment #1 : Hill Climbing 20 Steps')
 print()
+print()
+
+
+
+
+# Hill Climbing 10 Steps 1 Restart
 print('----------------------------------------------------------------------------------')
-print('Hill Climbing Experiment #2')
+print('Experiment #2 : Hill Climbing 10 Steps & 1 Restart')
 print()
 
 
@@ -401,33 +414,72 @@ for i in range(10):
     if(value == 5):
         experiment_two_number_of_successes += 1
 
-print('Hill Climbing - End of Simulations for Experiement #2')
+
+print('End of Simulations for Experiment #2 : Hill Climbing 10 Steps & 1 Restart')
 print()
 print()
 
 
 
 
-# Local Beam Search
+# Local Beam Search With 2 Beams & 20 Steps
 print('----------------------------------------------------------------------------------')
-print('Local Beam Start')
+print('Experiment #3 : Local Beam Search With 2 Beams & 20 Steps')
+print()
+
+
+#
+# Simulation Code Goes Here
+#
+experiment_three_number_of_successes = 0
 
 
 #value = local_beam_search(example_grid, 20)
-print("Local Beam Result")
+print("End of Simulations for Experiment #3 : Local Beam Search With 2 Beams & 20 Steps")
 #print(value)
 print()
 print()
 
 
+
+
+# Simulated Annealing Modification
+print('----------------------------------------------------------------------------------')
+print('Experiment #4 : Simulated Annealing Modification')
+print()
+
+
+#
+# Simulation Code Goes Here
+#
+experiment_four_number_of_successes = 0
+
+
+#value = local_beam_search(example_grid, 20)
+print("End of Simulations for Experiment #4 : Simulated Annealing Modification")
+#print(value)
+print()
+print()
+
+
+
+
 # Final Results
 print('----------------------------------------------------------------------------------')
 print('Final Results')
-print("Experiment 1 # of Successes:")
+print("Experiment 1 : Hill Climbing 20 Steps : # of Successes:")
 print(experiment_one_number_of_successes)
-print("Experiment 1 # Success Rate:")
+print("Experiment 1 # Hill Climbing 20 Steps : Success Rate:")
 print(experiment_one_number_of_successes * 10, end ="%\n")
-print("Experiment 2 # of Successes:")
+print("Experiment 2 : Hill Climbing 10 Steps & 1 Restart : # of Successes:")
 print(experiment_two_number_of_successes)
-print("Experiment 2 # Success Rate:")
-print(experiment_two_number_of_successes * 10, end ="%")
+print("Experiment 2 : Hill Climbing 10 Steps & 1 Restart : # Success Rate:")
+print(experiment_two_number_of_successes * 10, end ="%\n")
+print("Experiment 3 : Local Beam Search With 2 Beams & 20 Steps : # of Successes:")
+print(experiment_three_number_of_successes)
+print("Experiment 3 : Local Beam Search With 2 Beams & 20 Steps : # Success Rate:")
+print(experiment_three_number_of_successes * 10, end ="%\n")
+print("Experiment 4 : Simulated Annealing Modification : # of Successes:")
+print(experiment_four_number_of_successes)
+print("Experiment 4 : Simulated Annealing Modification : # Success Rate:")
+print(experiment_four_number_of_successes * 10, end ="%")
