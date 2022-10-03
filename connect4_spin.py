@@ -7,11 +7,13 @@ board_dict = {1: 'a', 2: 'b', 3: 'c',
 			4: 'd', 5: 'e', 6: 'f', 
 			7: 'g', 8: 'h'}
 
+# below is a representation of the board squares
+board_squares = [ ['E'] * COL_SIZE ] * ROW_SIZE 
+
 def board_progress():
 	# corners in one horizontal border
     corners = ['+'] * (COL_SIZE+1)
-	# below is a representation of the board squares
-    board_squares = [ ['E'] * COL_SIZE ] * ROW_SIZE 
+    
     # print top margin
     # 2 spaces +  numbers separated by space
     print('  ' + ' '.join([ str(num) for num in range(1,COL_SIZE+1) ]))
