@@ -15,12 +15,14 @@ char_to_num = {'a': 0, 'b': 1, 'c': 2, 'd': 3,
 board_squares = [ ['E'] * COL_SIZE ] * ROW_SIZE 
 
 def board_progress():
-	# corners in one horizontal border
+    # corners in one horizontal border
     corners = ['+'] * (COL_SIZE+1)
     
     # print top margin
     # 2 spaces +  numbers separated by space
     print('  ' + ' '.join([ str(num) for num in range(1,COL_SIZE+1) ]))
+
+    # print rows of board and borders between rows
     for pos in range(ROW_SIZE):
     	# letter on left margin + bar + square status separate by bar + bar
         board_row = num_to_char[pos] + '|' + '|'.join(board_squares[pos]) + '|'
@@ -28,9 +30,39 @@ def board_progress():
         # print horizontal border
         print(' ' + '-'.join(corners))
 
-# Ask human: which player, Red or Yellow, do they want to play as?
-# save input into player variable
-player = input("Which player would you like to play (R/Y)? ")
 
-board_progress()
+
+if __name__ == "__main__":
+
+    # Ask human: which player, Red or Yellow, do they want to play as?
+    # save input into player variable
+    player = input("Which player would you like to play (R/Y)? ")
+    # status to continue/end while loop
+    status = True
+    
+    # Ask again if human does not give the right input
+    while player not in ['R', 'r', 'Y', 'y', 'Q', 'q']:
+        player = input("Please input one of these options (R - Red, Y - Yellow, q - quit): ")
+        if player.lower() == 'q':
+            status = False
+    
+    # If human picks Red player, they go first
+    if player.upper() == 'R':
+        print("No moves yet")
+    # otherwise, agent goes first
+    # TODO
+    
+    # start the game
+    while status:
+        # show the board with human move
+        board_progress()
+
+        # TODO: program agent to make a move
+
+        # TODO: show the board with agent move
+        
+        # print instruction for human's next move
+        move = input("Please enter your move (format row-column-flip_column): ")
+
+        status = False
 
