@@ -12,7 +12,7 @@ char_to_num = {'a': 0, 'b': 1, 'c': 2, 'd': 3,
                 'e': 4, 'f': 5, 'g': 6, 'h': 7}
 
 # below is a representation of the board squares
-board_squares = [ ['E'] * COL_SIZE ] * ROW_SIZE 
+board_squares = [ ['E'] * COL_SIZE for _ in range(ROW_SIZE) ]
 
 def board_progress():
     # corners in one horizontal border
