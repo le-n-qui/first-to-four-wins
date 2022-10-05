@@ -14,6 +14,9 @@ char_to_num = {'a': 0, 'b': 1, 'c': 2, 'd': 3,
 # below is a representation of the board squares
 board_squares = [ ['E'] * COL_SIZE for _ in range(ROW_SIZE) ]
 
+# save player who wins
+winner = None
+
 def board_progress():
     # corners in one horizontal border
     corners = ['+'] * (COL_SIZE+1)
@@ -125,6 +128,25 @@ def swap(x1, y1, x2, y2):
     board_squares[x1][y1] = board_squares[x2][y2]
     board_squares[x2][y2] = temp
 
+# This function will determine
+# whether there is a winner after
+# each move.
+# It returns a boolean value.
+def end_game():
+    col1 = 0
+    col2 = 1
+    # verify winner in row
+    for row in board_squares:
+        # check from first column
+        if row[col1] == row[col1+1] == row[col1+2] == row[col1+3]:
+            winner = row[col1]
+            return True        
+        # check from second column
+        if row[col2] == row[col2+1] == row[col2+2] == row[col2+3]
+            winner = row[col2]
+            return True
+    
+    return False
 
 
 if __name__ == "__main__":
