@@ -137,15 +137,22 @@ def end_game():
     col2 = 1
     # verify winner in row
     for row in board_squares:
-        # check from first column
-        if row[col1] == row[col1+1] == row[col1+2] == row[col1+3]:
-            winner = row[col1]
-            return True        
-        # check from second column
-        if row[col2] == row[col2+1] == row[col2+2] == row[col2+3]
-            winner = row[col2]
-            return True
+        for col in [0, 1]:
+            # check from column at position col
+            if row[col] == row[col+1] == row[col+2] == row[col+3]:
+                winner = row[col]
+                return True      
     
+    # Verify winner in column
+    # loop through the columns of a row
+    for pos in len(board_squares[row]):
+        # look for 4 in a column, starting at position temp_row
+        for temp_row in [i for i in range(5)]:
+            # check for 4 in a column at temp_row
+            if board_squares[temp_row][pos] == board_squares[temp_row+1][pos] == board_squares[temp_row+2][pos] == board_squares[temp_row+3][pos]:
+                winner = board_squares[row][pos]
+                return True 
+
     return False
 
 
