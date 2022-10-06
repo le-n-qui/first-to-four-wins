@@ -189,6 +189,24 @@ def evaluate():
 
     return 0
 
+def minimax(board):
+    # evaluate the board
+    score = evaluate(board)
+
+    # if MAX wins
+    if score == 10:
+        return score
+    # if MIN wins
+    if score == -10:
+        return score
+
+    # check to see if player 
+    # can make a move
+    if not anyPossibleMove(board):
+        # no more move to make, draw game
+        return 0 
+
+
 
 if __name__ == "__main__":
 
