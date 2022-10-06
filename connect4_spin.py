@@ -1,5 +1,8 @@
 # Connect 4 Spin Game
 
+# libraries
+import sys
+
 # size of the game board
 ROW_SIZE = 8
 COL_SIZE = 5
@@ -189,7 +192,7 @@ def evaluate():
 
     return 0
 
-def minimax(board):
+def minimax(board, depth, maxPlayer):
     # evaluate the board
     score = evaluate(board)
 
@@ -205,7 +208,29 @@ def minimax(board):
     if not anyPossibleMove(board):
         # no more move to make, draw game
         return 0 
-
+    
+    # if it is MAX turn
+    if maxPlayer:
+        bestValue = - sys.maxsize - 1
+        # Look at each square (look at all possibilities)
+        for row in range(len(board)): # row number
+            for col in range(len(board[0])): # column number
+                if board[row][col] != 'E':
+                    # Make that move at row and col
+                    board[row][col] = 'R'
+                    bestValue = max(bestValue, minimax(board, depth+1, not maxPlayer))
+                    board[row][col] = 'E'
+        return bestValue
+    else:
+        bestValue = sys.maxsize
+        # Look at each square (look at all possibilities)
+        for row in range(len(board)): # row number
+            for col in range(len(board[0])): # column number
+                if board[row][col] != 'E':
+                    board[row][col] = 'Y'
+                    bestValue = min(bestValue, minimax(board, depth+1, not maxPlayer))
+                    board[row][col] = 'E'
+        return bestValue
 
 
 if __name__ == "__main__":
