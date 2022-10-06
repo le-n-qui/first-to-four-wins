@@ -128,20 +128,26 @@ def swap(x1, y1, x2, y2):
     board_squares[x1][y1] = board_squares[x2][y2]
     board_squares[x2][y2] = temp
 
-# This function will determine
-# whether there is a winner after
-# each move.
-# It returns a boolean value.
-def end_game():
+
+# This function (Utility function)
+# assesses how much the current board
+# is worth to the players involved
+# 10 -- R player wins
+# -10 -- Y player wins
+# 0 -- a draw game
+def evaluate():
     # verify winner in row
     for row in board_squares:
         # 4 in a row can only be found at column 0 and 1
         for col in [0, 1]:
             # check from column at position col
             if row[col] == row[col+1] == row[col+2] == row[col+3]:
-                winner = row[col]
-                return True      
-    
+                if row[col] == 'R':
+                    return 10
+
+                if row[col] == 'Y':
+                    return -10
+
     # Verify winner in column
     # loop through the columns of a row
     for pos in len(board_squares[row]):
@@ -149,9 +155,12 @@ def end_game():
         for temp_row in list(range(5)):
             # check for 4 in a column at temp_row
             if board_squares[temp_row][pos] == board_squares[temp_row+1][pos] == board_squares[temp_row+2][pos] == board_squares[temp_row+3][pos]:
-                winner = board_squares[row][pos]
-                return True 
-    
+                if board_squares[temp_row][pos] == 'R':
+                    return 10
+
+                if board_squares[temp_row][pos] == 'Y':
+                    return -10
+
     # Verify winner in diagonal 
     # from upper left to lower right
     for pos in range(5):
@@ -159,8 +168,11 @@ def end_game():
         for col in [0, 1]:
             # check for 4 in a diagonal at position col
             if board_squares[pos][col] == board_squares[pos+1][col+1] == board_squares[pos+2][col+2] == board_squares[pos+3][col+3]: 
-                winner = board_squares[pos][col]
-                return True         
+                if board_squares[pos][col] == 'R':
+                    return 10 
+
+                if board_squares[pos][col] == 'Y':
+                    return -10
 
     # Verify winner in diagonal
     # from lower left to upper right
@@ -169,10 +181,13 @@ def end_game():
         for col in [0, 1]:
             # check for 4 in a diagonal at position col
             if board_squares[pos][col] == board_squares[pos-1][col+1] == board_squares[pos-2][col+2] == board_squares[pos-3][col+3]:
-                winner = board_squares[pos][col]
-                return True
-        
-    return False
+                if board_squares[pos][col] == 'R':
+                    return 10 
+
+                if board_squares[pos][col] == 'Y':
+                    return -10 
+
+    return 0
 
 
 if __name__ == "__main__":
