@@ -115,21 +115,22 @@ def add_color(row_to_change, column_to_change, player_color):
         board_squares[row_to_change][column_to_change] = "E"
 
 
-def spin_column(column_to_spin):
+def spin_column(board, column_to_spin):
     # This method will only work if a valid value is put in.
-    # This willshould ignore "n" and other illegal numbers
+    # This should ignore "n" and other illegal numbers
     if not column_to_spin == "n":
         # Swap the values to mimic a spin
-        swap(0, column_to_spin, 7, column_to_spin)
-        swap(1, column_to_spin, 6, column_to_spin)
-        swap(2, column_to_spin, 5, column_to_spin)
-        swap(3, column_to_spin, 4, column_to_spin)
+        swap(board, 0, column_to_spin, 7, column_to_spin)
+        swap(board, 1, column_to_spin, 6, column_to_spin)
+        swap(board, 2, column_to_spin, 5, column_to_spin)
+        swap(board, 3, column_to_spin, 4, column_to_spin)
+    return board
 
 
-def swap(x1, y1, x2, y2):
-    temp = board_squares[x1][y1]
-    board_squares[x1][y1] = board_squares[x2][y2]
-    board_squares[x2][y2] = temp
+def swap(board, x1, y1, x2, y2):
+    temp = board[x1][y1]
+    board[x1][y1] = board[x2][y2]
+    board[x2][y2] = temp
 
 
 # This function (Utility function)
@@ -212,24 +213,49 @@ def minimax(board, depth, maxPlayer):
     # if it is MAX turn
     if maxPlayer:
         bestValue = - sys.maxsize - 1
-        # Look at each square (look at all possibilities)
-        for row in range(len(board)): # row number
-            for col in range(len(board[0])): # column number
-                if board[row][col] != 'E':
-                    # Make that move at row and col
-                    board[row][col] = 'R'
-                    bestValue = max(bestValue, minimax(board, depth+1, not maxPlayer))
-                    board[row][col] = 'E'
+        # Look at each square (look at all possibilities) at
+        # row number
+        for row in range(len(board)): 
+            # column number
+            for col in range(len(board[0])): 
+                # choose a column to flip
+                for flip_col in range(len(board[0])):
+                    # if square at row and col is empty
+                    if board[row][col] != 'E':
+                        # Let MAX make that move at row and col
+                        board[row][col] = 'R'
+                        # spin column at flip_col
+                        board = spin_column(board, flip_col)
+                        # choose the best value by picking the maximum of 
+                        # current best value and what is returned by minimax
+                        bestValue = max(bestValue, minimax(board, depth+1, not maxPlayer))
+                        # reverse the spin
+                        board = spin_column(board, flip_col)
+                        # mark this current square 'E' again
+                        board[row][col] = 'E'
         return bestValue
     else:
         bestValue = sys.maxsize
-        # Look at each square (look at all possibilities)
-        for row in range(len(board)): # row number
-            for col in range(len(board[0])): # column number
-                if board[row][col] != 'E':
-                    board[row][col] = 'Y'
-                    bestValue = min(bestValue, minimax(board, depth+1, not maxPlayer))
-                    board[row][col] = 'E'
+        # Look at each square (look at all possibilities) at
+        # row number
+        for row in range(len(board)): 
+            # column number
+            for col in range(len(board[0])): 
+                # choose a column to flip
+                for flip_col in range(len(board[0])):
+                    # if square at row and col is empty
+                    if board[row][col] != 'E':
+                        # let MIN make that move at row and col
+                        board[row][col] = 'Y'
+                        # let MIN spin a column at flip col
+                        board = spin_column(board, flip_col)
+                        # choose the best value by picking the minimum of
+                        # current best value and what is returned by minimax
+                        bestValue = min(bestValue, minimax(board, depth+1, not maxPlayer))
+                        # reverse the spin
+                        board = spin_column(board, flip_col)
+                        # mark this current square empty
+                        board[row][col] = 'E'
         return bestValue
 
 
