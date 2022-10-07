@@ -101,7 +101,7 @@ def convert_user_move_to_function_variables(row_to_change, column_to_change, col
 
 def process_move(row_to_change, column_to_change, column_to_spin, player_color):
     add_color(row_to_change, column_to_change, player_color)
-    spin_column(column_to_spin)
+    spin_column(board_squares, column_to_spin)
 
 
 def add_color(row_to_change, column_to_change, player_color):
@@ -192,6 +192,7 @@ def evaluate():
                 if board_squares[pos][col] == 'Y':
                     return -10 
     return 0
+
 
 def minimax(board, depth, maxPlayer):
     # evaluate the board
@@ -308,14 +309,14 @@ if __name__ == "__main__":
             correct_user_format, valid_move = check_user_input(move)
 
         # If we made it this far, the user input move is valid
-        # Convert the user input into values our program can use
-        user_move = move.split("-")
-        user_row_to_move, user_column_to_move, user_column_to_spin = convert_user_move_to_function_variables(user_move[0], user_move[1], user_move[2])
 
         # Print statements for debugging
-        print(user_row_to_move)
-        print(user_column_to_move)
-        print(user_column_to_spin)
+        player_color = ""
+        if player.upper() == "R":
+            player_color = "Red"
+        else:
+            player_color = "Yellow"
+        print(player_color, "moves", move)
         
         # Algorithm calculating the best move goes here
         # algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin = 0
@@ -323,6 +324,8 @@ if __name__ == "__main__":
 
         # Process the moves of the player and algorithm, depending on which color
         # the player is
+        move_list = move.split("-")
+        user_row_to_move, user_column_to_move, user_column_to_spin = convert_user_move_to_function_variables(move_list[0], move_list[1], move_list[2])
         if player.upper() == "R":
             process_move(user_row_to_move, user_column_to_move, user_column_to_spin, "R")
             # process_move(algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin, "Y")
