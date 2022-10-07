@@ -1,12 +1,15 @@
 # import libraries
 import copy
 import random
-from threading import local
 
 from hill_climbing_experiment import random_grid
-from hill_climbing_experiment import generate_value
 from hill_climbing_experiment import find_all_neighbors
 from hill_climbing_experiment import find_highest_value_neighbor
+from hill_climbing_experiment import hill_climbing
+from hill_climbing_experiment import find_highest_value_neighbor
+from hill_climbing_experiment import local_beam_search
+from hill_climbing_experiment import find_all_neighbors
+from hill_climbing_experiment import show_agent_progress
 
 # set a seed value
 # so random values
@@ -120,52 +123,141 @@ def simulated_annealing(grid, max_number_of_steps, max_number_of_restarts=0):
 
 
 
-# Show agent on grid
-def show_agent_progress(grid, current_x, current_y):
-    # Represent agent with letter X
-    # at point (current_x, current_y)
-    grid[current_x][current_y] = 'X'
-    # loop through the outer list
-    for row in grid:
-    	# print each inner list
-        print(row)
-    # print a newline
-    print()
 
 #
 # Simulation code below
 #
 
-# Simulated Annealing
-print('----------------------------------------------------------------------------------')
-print('Simulated Annealing Experiment #1')
+
+# Hill Climbing 20 Steps
+print("----------------------------------------------------------------------------------")
+print("Experiment #1 : Hill Climbing 20 Steps")
 print()
 
+
+experiment_one_number_of_successes = 0
 for i in range(10):
-    print('GRID {} LAYOUT: '.format(i+1))
-    print('---------------')
+    print("GRID {} LAYOUT: ".format(i+1))
+    print("---------------")
     print()
     example_grid = random_grid()
     for row in example_grid:
         print(row)
-    value = simulated_annealing(example_grid, 20)
+    value = hill_climbing(example_grid, 20)
+    if(value == 5):
+        experiment_one_number_of_successes += 1
 
-print('Simulated Annealing - End of Simulations for Experiment #1')
 
+print("End of Simulations for Experiment #1 : Hill Climbing 20 Steps")
 print()
-print('----------------------------------------------------------------------------------')
-print('Simulated Annealing Experiment #2')
 print()
 
+
+
+
+# Hill Climbing 10 Steps 1 Restart
+print("----------------------------------------------------------------------------------")
+print("Experiment #2 : Hill Climbing 10 Steps & 1 Restart")
+print()
+
+
+experiment_two_number_of_successes = 0
 for i in range(10):
-    print('GRID {} LAYOUT: '.format(i+1))
-    print('---------------')
+    print("GRID {} LAYOUT: ".format(i+1))
+    print("---------------")
     print()
     new_grid = random_grid()
     for row in new_grid:
         print(row)
-    value = simulated_annealing(new_grid, 10, 1)
+    value = hill_climbing(new_grid, 10, 1)
+    if(value == 5):
+        experiment_two_number_of_successes += 1
 
-print('Simulated Annealing - End of Simulations for Experiement #2')
+
+print("End of Simulations for Experiment #2 : Hill Climbing 10 Steps & 1 Restart")
 print()
 print()
+
+
+
+
+# Local Beam Search With 2 Beams & 20 Steps
+print("----------------------------------------------------------------------------------")
+print("Experiment #3 : Local Beam Search With 2 Beams & 20 Steps")
+print()
+
+
+#
+# Simulation Code Goes Here
+#
+experiment_three_number_of_successes = 0
+for i in range(10):
+    print("GRID {} LAYOUT: ".format(i+1))
+    print("---------------")
+    print()
+    new_grid = random_grid()
+    for row in new_grid:
+        print(row)
+    value = local_beam_search(new_grid, 20)
+    if(value == 5):
+        experiment_three_number_of_successes += 1
+
+
+print("End of Simulations for Experiment #3 : Local Beam Search With 2 Beams & 20 Steps")
+#print(value)
+print()
+print()
+
+
+
+
+# Simulated Annealing Modification
+print("----------------------------------------------------------------------------------")
+print("Experiment #4 : Simulated Annealing Modification")
+print()
+
+
+#
+# Simulation Code Goes Here
+#
+experiment_four_number_of_successes = 0
+for i in range(10):
+    print("GRID {} LAYOUT: ".format(i+1))
+    print("---------------")
+    print()
+    new_grid = random_grid()
+    for row in new_grid:
+        print(row)
+    value = simulated_annealing(new_grid, 10)
+    if(value == 5):
+        experiment_four_number_of_successes += 1
+
+
+#value = local_beam_search(example_grid, 20)
+print("End of Simulations for Experiment #4 : Simulated Annealing Modification")
+#print(value)
+print()
+print()
+
+
+
+
+# Final Results
+print("----------------------------------------------------------------------------------")
+print("Final Results")
+print("Experiment 1 : Hill Climbing 20 Steps : # of Successes:")
+print(experiment_one_number_of_successes)
+print("Experiment 1 # Hill Climbing 20 Steps : Success Rate:")
+print(experiment_one_number_of_successes * 10, end ="%\n")
+print("Experiment 2 : Hill Climbing 10 Steps & 1 Restart : # of Successes:")
+print(experiment_two_number_of_successes)
+print("Experiment 2 : Hill Climbing 10 Steps & 1 Restart : # Success Rate:")
+print(experiment_two_number_of_successes * 10, end ="%\n")
+print("Experiment 3 : Local Beam Search With 2 Beams & 20 Steps : # of Successes:")
+print(experiment_three_number_of_successes)
+print("Experiment 3 : Local Beam Search With 2 Beams & 20 Steps : # Success Rate:")
+print(experiment_three_number_of_successes * 10, end ="%\n")
+print("Experiment 4 : Simulated Annealing Modification : # of Successes:")
+print(experiment_four_number_of_successes)
+print("Experiment 4 : Simulated Annealing Modification : # Success Rate:")
+print(experiment_four_number_of_successes * 10, end ="%")
