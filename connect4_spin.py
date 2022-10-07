@@ -20,7 +20,7 @@ board_squares = [ ['E'] * COL_SIZE for _ in range(ROW_SIZE) ]
 # save player who wins
 winner = None
 
-def board_progress():
+def print_board_progress():
     # corners in one horizontal border
     corners = ['+'] * (COL_SIZE+1)
     
@@ -133,6 +133,7 @@ def swap(board, x1, y1, x2, y2):
     board[x2][y2] = temp
 
 
+
 # This function (Utility function)
 # assesses how much the current board
 # is worth to the players involved
@@ -190,7 +191,6 @@ def evaluate():
 
                 if board_squares[pos][col] == 'Y':
                     return -10 
-
     return 0
 
 def minimax(board, depth, maxPlayer):
@@ -206,7 +206,7 @@ def minimax(board, depth, maxPlayer):
 
     # check to see if player 
     # can make a move
-    if not anyPossibleMove(board):
+    if not any_possible_moves():
         # no more move to make, draw game
         return 0 
     
@@ -259,6 +259,13 @@ def minimax(board, depth, maxPlayer):
         return bestValue
 
 
+def any_possible_moves():
+    for row in board_squares:
+        if "E" in row:
+            return True
+    return False
+
+
 if __name__ == "__main__":
 
     # Ask human: which player, Red or Yellow, do they want to play as?
@@ -282,7 +289,7 @@ if __name__ == "__main__":
     # start the game
     while status:
         # show the board with human move
-        board_progress()
+        print_board_progress()
 
         # TODO: program agent to make a move
 
