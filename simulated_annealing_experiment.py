@@ -71,8 +71,14 @@ def simulated_annealing(grid, max_number_of_steps, max_number_of_restarts=0):
             find_all_neighbors(grid, current_x, current_y, neighbors_list)
 
             # Random
+            next_value = random.randint(0, 5)
 
-            # if (DeltaE < 0):
+            # if the new solution is better, 
+            # update the current value
+            cost_diff = next_value - current_value
+            if cost_diff < 0:
+                current_value = next_value
+
             current_x = successor_x
             current_y = successor_y
             current_value = successor_value
