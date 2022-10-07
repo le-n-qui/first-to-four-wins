@@ -161,9 +161,9 @@ def evaluate():
 
     # Verify winner in column
     # loop through the columns of a row
-    for pos in len(board_squares[row]):
+    for pos in range(5):
         # look for 4 in a column, starting at position temp_row
-        for temp_row in list(range(5)):
+        for temp_row in range(5):
             # check for 4 in a column at temp_row
             if board_squares[temp_row][pos] == board_squares[temp_row+1][pos] == board_squares[temp_row+2][pos] == board_squares[temp_row+3][pos]:
                 if board_squares[temp_row][pos] == 'R':
@@ -209,31 +209,32 @@ def evaluate():
     return score, four_in_a_row_found
 
 
-# def calculate_score():
-#     number_of_colors_in_a_row = 0
+# DOES NOT WORK : WIP : TODO
+def calculate_score():
+    number_of_colors_in_a_row = 0
 
-#     # Checking every row
-#     for row in board_squares:
-#         # 4 in a row can only be found at column 0 and 1
-#         for col in [0, 1]:
-#             # Only continue if 
+    # Checking every row
+    for row in board_squares:
+        # 4 in a row can only be found at column 0 and 1
+        for col in [0, 1]:
+            # Only continue if 
             
-#             # Grab the four elements in a line and store them in a list
-#             elements = []
-#             elements.append(row[col])
-#             elements.append(row[col+1])
-#             elements.append(row[col+2])
-#             elements.append(row[col+3])
+            # Grab the four elements in a line and store them in a list
+            elements = []
+            elements.append(row[col])
+            elements.append(row[col+1])
+            elements.append(row[col+2])
+            elements.append(row[col+3])
 
-#             # Count the number of squares that are red / yellow
-#             number_of_red_squares, number_of_yellow_squares = 0
-#             number_of_red_squares = elements.count("R")
-#             number_of_yellow_squares = elements.count("Y")
+            # Count the number of squares that are red / yellow
+            number_of_red_squares, number_of_yellow_squares = 0
+            number_of_red_squares = elements.count("R")
+            number_of_yellow_squares = elements.count("Y")
             
-#             # R R R Y
-#             # Y R R R
-#             # Y R R R Y
-#             # R R Y R
+            # R R R Y
+            # Y R R R
+            # Y R R R Y
+            # R R Y R
 
     # Checking every row
     # loop through the columns of a row
@@ -276,7 +277,7 @@ def evaluate():
 
 def minimax(board, depth, maxPlayer):
     # evaluate the board
-    score, four_in_a_row_found = evaluate(board)
+    score, four_in_a_row_found = evaluate()
 
     # if MAX wins
     if score >= 10 and four_in_a_row_found:
@@ -415,6 +416,22 @@ if __name__ == "__main__":
             process_move(user_row_to_move, user_column_to_move, user_column_to_spin, "Y")
             # process_move(algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin, "R")
 
-        
-        # status = False
+        # evaluate the board
+        score, four_in_a_row_found = evaluate()
 
+        # if Red wins
+        if score >= 10 and four_in_a_row_found:
+            print_board_progress()
+            print("Red wins")
+            status = False
+        # if Yellow wins
+        elif score <= -10 and four_in_a_row_found:
+            print_board_progress()
+            print("Yellow wins")
+            status = False
+        # if both players obtain an equal number of 4 in a rows
+        # OR if no more moves can be made, game is a draw
+        elif (score == 0 and four_in_a_row_found) or not any_possible_moves():
+            print_board_progress()
+            print("Draw")
+            status = False
