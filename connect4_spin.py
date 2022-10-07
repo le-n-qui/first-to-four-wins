@@ -284,12 +284,10 @@ def minimax(board, depth, maxPlayer):
     # if MIN wins
     if score <= -10 and four_in_a_row_found:
         return score
-
-    # check to see if player 
-    # can make a move
-    if not any_possible_moves():
-        # no more move to make, draw game
-        return 0 
+    # if both players obtain an equal number of 4 in a rows
+    # OR if no more moves can be made, game is a draw
+    if (score == 0 and four_in_a_row_found) or not any_possible_moves():
+        return score
     
     # if it is MAX turn
     if maxPlayer:
