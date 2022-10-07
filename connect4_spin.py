@@ -276,13 +276,13 @@ def evaluate():
 
 def minimax(board, depth, maxPlayer):
     # evaluate the board
-    score = evaluate(board)
+    score, four_in_a_row_found = evaluate(board)
 
     # if MAX wins
-    if score == 10:
+    if score >= 10 and four_in_a_row_found:
         return score
     # if MIN wins
-    if score == -10:
+    if score <= -10 and four_in_a_row_found:
         return score
 
     # check to see if player 
