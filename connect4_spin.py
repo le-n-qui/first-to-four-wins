@@ -20,7 +20,7 @@ board_squares = [ ['E'] * COL_SIZE for _ in range(ROW_SIZE) ]
 # save player who wins
 winner = None
 
-def board_progress():
+def print_board_progress():
     # corners in one horizontal border
     corners = ['+'] * (COL_SIZE+1)
     
@@ -101,7 +101,7 @@ def convert_user_move_to_function_variables(row_to_change, column_to_change, col
 
 def process_move(row_to_change, column_to_change, column_to_spin, player_color):
     add_color(row_to_change, column_to_change, player_color)
-    spin_column(column_to_spin)
+    spin_column(board_squares, column_to_spin)
 
 
 def add_color(row_to_change, column_to_change, player_color):
@@ -115,21 +115,23 @@ def add_color(row_to_change, column_to_change, player_color):
         board_squares[row_to_change][column_to_change] = "E"
 
 
-def spin_column(column_to_spin):
+def spin_column(board, column_to_spin):
     # This method will only work if a valid value is put in.
-    # This willshould ignore "n" and other illegal numbers
+    # This should ignore "n" and other illegal numbers
     if not column_to_spin == "n":
         # Swap the values to mimic a spin
-        swap(0, column_to_spin, 7, column_to_spin)
-        swap(1, column_to_spin, 6, column_to_spin)
-        swap(2, column_to_spin, 5, column_to_spin)
-        swap(3, column_to_spin, 4, column_to_spin)
+        swap(board, 0, column_to_spin, 7, column_to_spin)
+        swap(board, 1, column_to_spin, 6, column_to_spin)
+        swap(board, 2, column_to_spin, 5, column_to_spin)
+        swap(board, 3, column_to_spin, 4, column_to_spin)
+    return board
 
 
-def swap(x1, y1, x2, y2):
-    temp = board_squares[x1][y1]
-    board_squares[x1][y1] = board_squares[x2][y2]
-    board_squares[x2][y2] = temp
+def swap(board, x1, y1, x2, y2):
+    temp = board[x1][y1]
+    board[x1][y1] = board[x2][y2]
+    board[x2][y2] = temp
+
 
 
 # This function (Utility function)
@@ -189,8 +191,8 @@ def evaluate():
 
                 if board_squares[pos][col] == 'Y':
                     return -10 
-
     return 0
+
 
 def minimax(board, depth, maxPlayer):
     # evaluate the board
@@ -205,32 +207,68 @@ def minimax(board, depth, maxPlayer):
 
     # check to see if player 
     # can make a move
-    if not anyPossibleMove(board):
+    if not any_possible_moves():
         # no more move to make, draw game
         return 0 
     
     # if it is MAX turn
     if maxPlayer:
         bestValue = - sys.maxsize - 1
-        # Look at each square (look at all possibilities)
-        for row in range(len(board)): # row number
-            for col in range(len(board[0])): # column number
-                if board[row][col] != 'E':
-                    # Make that move at row and col
-                    board[row][col] = 'R'
-                    bestValue = max(bestValue, minimax(board, depth+1, not maxPlayer))
-                    board[row][col] = 'E'
+        # Look at each square (look at all possibilities) at
+        # row number
+        for row in range(len(board)): 
+            # column number
+            for col in range(len(board[0])): 
+                # choose a column to flip
+                for flip_col in range(len(board[0])):
+                    # if square at row and col is empty
+                    if board[row][col] != 'E':
+                        # Let MAX make that move at row and col
+                        board[row][col] = 'R'
+                        # spin column at flip_col
+                        board = spin_column(board, flip_col)
+                        # choose the best value by picking the maximum of 
+                        # current best value and what is returned by minimax
+                        bestValue = max(bestValue, minimax(board, depth+1, not maxPlayer))
+                        # reverse the spin
+                        board = spin_column(board, flip_col)
+                        # mark this current square 'E' again
+                        board[row][col] = 'E'
         return bestValue
     else:
         bestValue = sys.maxsize
-        # Look at each square (look at all possibilities)
-        for row in range(len(board)): # row number
-            for col in range(len(board[0])): # column number
-                if board[row][col] != 'E':
-                    board[row][col] = 'Y'
-                    bestValue = min(bestValue, minimax(board, depth+1, not maxPlayer))
-                    board[row][col] = 'E'
+        # Look at each square (look at all possibilities) at
+        # row number
+        for row in range(len(board)): 
+            # column number
+            for col in range(len(board[0])): 
+                # choose a column to flip
+                for flip_col in range(len(board[0])):
+                    # if square at row and col is empty
+                    if board[row][col] != 'E':
+                        # let MIN make that move at row and col
+                        board[row][col] = 'Y'
+                        # let MIN spin a column at flip col
+                        board = spin_column(board, flip_col)
+                        # choose the best value by picking the minimum of
+                        # current best value and what is returned by minimax
+                        bestValue = min(bestValue, minimax(board, depth+1, not maxPlayer))
+                        # reverse the spin
+                        board = spin_column(board, flip_col)
+                        # mark this current square empty
+                        board[row][col] = 'E'
         return bestValue
+
+
+# Returns true if the player can make a move or not
+# This is determined by checking if the board has an 
+# empty square remaining and returning True if yes and
+# False if no
+def any_possible_moves():
+    for row in board_squares:
+        if "E" in row:
+            return True
+    return False
 
 
 if __name__ == "__main__":
@@ -256,7 +294,7 @@ if __name__ == "__main__":
     # start the game
     while status:
         # show the board with human move
-        board_progress()
+        print_board_progress()
 
         # TODO: program agent to make a move
 
@@ -275,14 +313,14 @@ if __name__ == "__main__":
             correct_user_format, valid_move = check_user_input(move)
 
         # If we made it this far, the user input move is valid
-        # Convert the user input into values our program can use
-        user_move = move.split("-")
-        user_row_to_move, user_column_to_move, user_column_to_spin = convert_user_move_to_function_variables(user_move[0], user_move[1], user_move[2])
 
         # Print statements for debugging
-        print(user_row_to_move)
-        print(user_column_to_move)
-        print(user_column_to_spin)
+        player_color = ""
+        if player.upper() == "R":
+            player_color = "Red"
+        else:
+            player_color = "Yellow"
+        print(player_color, "moves", move)
         
         # Algorithm calculating the best move goes here
         # algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin = 0
@@ -290,6 +328,8 @@ if __name__ == "__main__":
 
         # Process the moves of the player and algorithm, depending on which color
         # the player is
+        move_list = move.split("-")
+        user_row_to_move, user_column_to_move, user_column_to_spin = convert_user_move_to_function_variables(move_list[0], move_list[1], move_list[2])
         if player.upper() == "R":
             process_move(user_row_to_move, user_column_to_move, user_column_to_spin, "R")
             # process_move(algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin, "Y")
