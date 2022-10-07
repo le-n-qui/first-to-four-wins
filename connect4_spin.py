@@ -260,6 +260,10 @@ def minimax(board, depth, maxPlayer):
         return bestValue
 
 
+# Returns true if the player can make a move or not
+# This is determined by checking if the board has an 
+# empty square remaining and returning True if yes and
+# False if no
 def any_possible_moves():
     for row in board_squares:
         if "E" in row:
