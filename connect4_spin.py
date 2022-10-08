@@ -346,7 +346,8 @@ def minimax(board, depth, player, alpha, beta):
         bestValue = -sys.maxsize - 1
         # Look at each square (look at all possibilities) at
         # row number
-        return_row, return_col = 0
+        return_row = 0
+        return_col = 0
         return_flip_col = None
 
         for row in range(len(board)):
@@ -377,7 +378,8 @@ def minimax(board, depth, player, alpha, beta):
         bestValue = sys.maxsize
     # Look at each square (look at all possibilities) at
     # row number
-        return_row, return_col = 0
+        return_row = 0
+        return_col = 0
         return_flip_col = None
 
         for row in range(len(board)):
@@ -419,12 +421,17 @@ def any_possible_moves():
 
 
 if __name__ == "__main__":
+    player_color = None
+    player_color_short = None
+    algorithm_color = None
+    algorithm_color_short = None
 
+    
     # Ask human: which player, Red or Yellow, do they want to play as?
     # save input into player variable
     player = input("Which player would you like to play (R/Y)? ")
     # save type of player for machine
-    algorithm_player = None
+    
     # status to continue/end while loop
     status = True
 
@@ -438,17 +445,23 @@ if __name__ == "__main__":
 
     # If human picks Red player, they go first
     if player.upper() == 'R':
-        algorithm_player = 'Y'
+        player_color = "Red"
+        player_color_short = "R"
+        algorithm_color = 'Yellow'
+        algorithm_color_short = "Y"
         print("No moves yet")
     # otherwise, AI goes first and makes a random move
     else:
-        algorithm_player = 'R'
+        player_color = "Yellow"
+        player_color_short = "Y"
+        algorithm_color = 'Red'
+        algorithm_color_short = "R"
         random_row = random.randint(0,7)
         random_column = random.randint(0,4)
-        process_move(random_row, random_column, "n", algorithm_player)
+        process_move(random_row, random_column, "n", algorithm_color_short)
         printed_row = num_to_char[random_row]
         printed_column = random_column + 1
-        print("Red moves", "{}-{}-n".format(printed_row, printed_column))
+        print(algorithm_color, "moves", "{}-{}-n".format(printed_row, printed_column))
 
     # start the game
     while status:
@@ -479,12 +492,7 @@ if __name__ == "__main__":
         # If we made it this far, the user input move is valid
 
         # Print statements for debugging
-        # player_color = ""
-        # if player.upper() == "R":
-        #     player_color = "Red"
-        # else:
-        #     player_color = "Yellow"
-        # print(player_color, "moves", move)
+        print(player_color, "moves", move)
 
         # Algorithm calculating the best move goes here
         # algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin = 0
@@ -528,10 +536,13 @@ if __name__ == "__main__":
             print("Draw")
             status = False
 
-        if not status:
+        if status:
             depth = 1
             if player.upper() == "Y":
                 depth += 1
                     
-            score, calculated_row, caluclated_column, calculated_spin = minimax(board_squares, depth, algorithm_player, -sys.maxsize - 1, sys.maxsize)
-            process_move(calculated_row, caluclated_column, calculated_spin, algorithm_player)
+            score, calculated_row, caluclated_column, calculated_spin = minimax(board_squares, depth, algorithm_color_short, -sys.maxsize - 1, sys.maxsize)
+            process_move(calculated_row, caluclated_column, calculated_spin, algorithm_color_short)
+            printed_row = num_to_char[calculated_row]
+            printed_column = caluclated_column + 1
+            print(print(algorithm_color, "moves", "{}-{}-n".format(printed_row, printed_column)))
