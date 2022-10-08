@@ -108,14 +108,14 @@ def process_move(row_to_change, column_to_change, column_to_spin, player_color):
 
 
 def add_color(row_to_change, column_to_change, player_color):
-    # Change the target tile to R or Y depending on if
-    # it's the red or yellow player's move
+    # Change the target tile to R or Y depending on 
+    # if it's the red or yellow player's move
     if player_color == "R":
         board_squares[row_to_change][column_to_change] = "R"
-    elif player_color == "Y":
+
+    if player_color == "Y":
         board_squares[row_to_change][column_to_change] = "Y"
-    else:
-        board_squares[row_to_change][column_to_change] = "E"
+    
 
 
 def spin_column(board, column_to_spin):
@@ -395,36 +395,32 @@ if __name__ == "__main__":
     # Ask human: which player, Red or Yellow, do they want to play as?
     # save input into player variable
     player = input("Which player would you like to play (R/Y)? ")
-    algorithm_player = ""
+    # save type of player for machine
+    algorithm_player = None
     # status to continue/end while loop
     status = True
 
 
     # Ask again if human does not give the right input
     while player not in ['R', 'r', 'Y', 'y', 'Q', 'q']:
-        player = input(
-            "Please input one of these options (R - Red, Y - Yellow, q - quit): ")
-        if player.upper() == "R":
-            algorithm_player = "Y"
-        else:
-            algorithm_player = "R"
-
+        player = input("Please input one of these options (R - Red, Y - Yellow, q - quit): ")
+    
         if player.lower() == 'q':
             status = False
 
     # If human picks Red player, they go first
     if player.upper() == 'R':
+        algorithm_player = 'Y'
         print("No moves yet")
     # otherwise, AI goes first and makes a random move
     else:
+        algorithm_player = 'R'
         random_row = random.randint(0,7)
         random_column = random.randint(0,4)
         process_move(random_row, random_column, "n", algorithm_player)
         printed_row = num_to_char[random_row]
         printed_column = random_column + 1
         print("Red moves", "{}-{}-n".format(printed_row, printed_column))
-        for row in board_squares:
-            print(row)
 
     # start the game
     while status:
@@ -439,67 +435,82 @@ if __name__ == "__main__":
         move = input(
             "Please enter your move (format row-column-flip_column): ")
 
-        correct_user_format, valid_move = check_user_input(move)
-        while valid_move == False:
-            if correct_user_format == False:
-                print("Illegal input format")
+        #Human player quits the game
+        if move.lower() == 'q':
+            if algorithm_player == 'R':
+                print("\nRed wins")
             else:
-                print("Valid input format. Illegal move")
-            move = input(
-                "Please enter your move (format row-column-flip_column): ")
+                print("\nYellow wins")
+
+            status = False
+        else:
+
             correct_user_format, valid_move = check_user_input(move)
 
-        # If we made it this far, the user input move is valid
+            while valid_move == False:
+                if correct_user_format == False:
+                    print("Illegal input format")
+                else:
+                    print("Valid input format. Illegal move")
+                
+                move = input("Please enter your move (format row-column-flip_column): ")
+                
+                correct_user_format, valid_move = check_user_input(move)
 
-        # Print statements for debugging
-        player_color = ""
-        if player.upper() == "R":
-            player_color = "Red"
-        else:
-            player_color = "Yellow"
-        print(player_color, "moves", move)
+                # If we made it this far, the user input move is valid
 
-        # Algorithm calculating the best move goes here
-        # algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin = 0
+            # Print statements for debugging
+            # player_color = ""
+            # if player.upper() == "R":
+            #     player_color = "Red"
+            # else:
+            #     player_color = "Yellow"
+            # print(player_color, "moves", move)
 
-        # Process the moves of the player and algorithm, depending on which color
-        # the player is
-        move_list = move.split("-")
-        user_row_to_move, user_column_to_move, user_column_to_spin = convert_user_move_to_function_variables(
+            # Algorithm calculating the best move goes here
+            # algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin = 0
+
+            # Process the moves of the player and algorithm, 
+            # depending on which color the player is
+            move_list = move.split("-")
+
+            user_row_to_move, user_column_to_move, user_column_to_spin = convert_user_move_to_function_variables(
             move_list[0], move_list[1], move_list[2])
-        if player.upper() == "R":
-            process_move(user_row_to_move, user_column_to_move,
-                         user_column_to_spin, "R")
-            # process_move(algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin, "Y")
-        else:
-            process_move(user_row_to_move, user_column_to_move,
-                         user_column_to_spin, "Y")
-            # process_move(algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin, "R")
 
-        # evaluate the board
-        score, four_in_a_row_found = evaluate()
+            if player.upper() == "R":
+                process_move(user_row_to_move, user_column_to_move,
+                                 user_column_to_spin, "R")
+                # process_move(algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin, "Y")
+            else:
+                process_move(user_row_to_move, user_column_to_move,
+                                 user_column_to_spin, "Y")
+                # process_move(algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin, "R")
 
-        # if Red wins
-        if score >= 10 and four_in_a_row_found:
-            print_board_progress()
-            print("Red wins")
-            status = False
-        # if Yellow wins
-        elif score <= -10 and four_in_a_row_found:
-            print_board_progress()
-            print("Yellow wins")
-            status = False
-        # if both players obtain an equal number of 4 in a rows
-        # OR if no more moves can be made, game is a draw
-        elif (score == 0 and four_in_a_row_found) or not any_possible_moves():
-            print_board_progress()
-            print("Draw")
-            status = False
+            # evaluate the board
+            score, four_in_a_row_found = evaluate()
 
-        if not status:
-            depth = 1
-            if player.upper() == "Y":
-                depth += 1
-            
-            score, calculated_row, caluclated_column, calculated_spin = minimax(board_squares, depth, algorithm_player, -sys.maxsize - 1, sys.maxsize)
-            process_move(calculated_row, caluclated_column, calculated_spin, algorithm_player)
+            # if Red wins
+            if score >= 10 and four_in_a_row_found:
+                print_board_progress()
+                print("Red wins")
+                status = False
+            # if Yellow wins
+            elif score <= -10 and four_in_a_row_found:
+                print_board_progress()
+                print("Yellow wins")
+                status = False
+                
+            # if both players obtain an equal number of 4 in a rows
+            # OR if no more moves can be made, game is a draw
+            elif (score == 0 and four_in_a_row_found) or not any_possible_moves():
+                print_board_progress()
+                print("Draw")
+                status = False
+
+            if not status:
+                depth = 1
+                if player.upper() == "Y":
+                    depth += 1
+                    
+                score, calculated_row, caluclated_column, calculated_spin = minimax(board_squares, depth, algorithm_player, -sys.maxsize - 1, sys.maxsize)
+                process_move(calculated_row, caluclated_column, calculated_spin, algorithm_player)
