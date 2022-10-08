@@ -21,7 +21,10 @@ board_squares = [['E'] * COL_SIZE for _ in range(ROW_SIZE)]
 # save player who wins
 winner = None
 
-
+# This function displays
+# the board. It will
+# reflect the changes made
+# by players making moves
 def print_board_progress():
     # corners in one horizontal border
     corners = ['+'] * (COL_SIZE+1)
@@ -38,7 +41,9 @@ def print_board_progress():
         # print horizontal border
         print(' ' + '-'.join(corners))
 
-
+# This function starts
+# the input verification
+# process
 def check_user_input(user_input):
     correct_user_format = False
     valid_move = False
@@ -49,14 +54,21 @@ def check_user_input(user_input):
             valid_move = True
     return correct_user_format, valid_move
 
-
+# This function verifies
+# whether user input
+# follows the desired format
 def is_user_input_format_correct(user_input):
     if len(move) == 5 and move[1] == "-" and move[3] == "-":
         return True
     else:
         return False
 
-
+# This function checks
+# to see if the user/machine
+# can make a move
+# given what they provide
+# and the current open
+# squares on the board
 def is_move_valid(row_to_change, column_to_change, column_to_spin):
     if are_inputs_valid(row_to_change, column_to_change, column_to_spin):
         row, column, spin = convert_user_move_to_function_variables(
@@ -68,21 +80,33 @@ def is_move_valid(row_to_change, column_to_change, column_to_spin):
     else:
         return False
 
-
+# This function verifies
+# whether each component
+# of the user input
+# are in the set of 
+# valid characters
 def are_inputs_valid(row_to_change, column_to_change, column_to_spin):
     if row_to_change in ["a", "b", "c", "d", "e", "f", "g", "h"] and column_to_change in ["1", "2", "3", "4", "5"] and column_to_spin in ["1", "2", "3", "4", "5", "n"]:
         return True
     else:
         return False
 
-
+# This function verifies
+# whether a board square
+# is empty or not
 def is_target_tile_empty(row_to_change, column_to_change):
     if board_squares[row_to_change][column_to_change] == "E":
         return True
     else:
         return False
 
-
+# This function accepts
+# the correctly-formatted 
+# user input and translate
+# it into the corresponding
+# position in the board
+# and confirms whether user
+# wants to flip any column
 def convert_user_move_to_function_variables(row_to_change, column_to_change, column_to_spin):
     # Use the num to char mapping to change between
     # letters and integers for the row index
@@ -101,12 +125,18 @@ def convert_user_move_to_function_variables(row_to_change, column_to_change, col
 
     return row, column, spin
 
-
+# This function, after checks are done,
+# will finally go through with
+# changing the board given
+# the move provided by the player
 def process_move(row_to_change, column_to_change, column_to_spin, player_color):
     add_color(row_to_change, column_to_change, player_color)
     spin_column(board_squares, column_to_spin)
 
-
+# This function changes
+# the status of the square
+# from empty to the disk
+# used by the player, R or Y
 def add_color(row_to_change, column_to_change, player_color):
     # Change the target tile to R or Y depending on 
     # if it's the red or yellow player's move
@@ -117,7 +147,10 @@ def add_color(row_to_change, column_to_change, player_color):
         board_squares[row_to_change][column_to_change] = "Y"
     
 
-
+# This function determines
+# if a column should be flipped
+# and, when verified, flips
+# the desired column
 def spin_column(board, column_to_spin):
     # This method will only work if a valid value is put in.
     # This should ignore "n" and other illegal numbers
@@ -129,7 +162,12 @@ def spin_column(board, column_to_spin):
         swap(board, 3, column_to_spin, 4, column_to_spin)
     return board
 
-
+# This function is 
+# a helper function
+# which supports the
+# the spin_column in
+# its job of flipping
+# a column
 def swap(board, x1, y1, x2, y2):
     temp = board[x1][y1]
     board[x1][y1] = board[x2][y2]
@@ -137,7 +175,7 @@ def swap(board, x1, y1, x2, y2):
 
 
 # FOR CALCULATING A BOARD'S SCORE
-
+#
 # This function (Utility function)
 # assesses how much the current board
 # is worth to the players involved
@@ -214,9 +252,9 @@ def evaluate():
 
 
 # FOR CALCULATING A BOARD'S SCORE
-
-
-# DOES NOT WORK : WIP : TODO
+#
+#
+# STATUS: In Progress -- TODO
 def calculate_score():
     number_of_colors_in_a_row = 0
 
@@ -283,7 +321,10 @@ def calculate_score():
                     score -= 10
 
 
-
+# This function implements
+# the minimax algorithm
+# as well as the alpha-beta
+# pruning technique
 def minimax(board, depth, player, alpha, beta):
     # calculate the score of the current board
     score, four_in_a_row_found = evaluate()
@@ -365,19 +406,6 @@ def minimax(board, depth, player, alpha, beta):
         return bestValue, return_row, return_col, return_flip_col
 
 
-# Main algorithm : pass in global board
-# calculate the score for global board --> calculate a score for current board
-# calculate all the children boards
-    # as a list of list of lists
-        # child : row : column
-# FIRST : give all the children scores --> calculate
-    # list
-# SECOND : alpha beta prune all the bad scores
-    # make a list of the values you prune
-    # at the end of hte funciton you delete() all the values to prune
-
-    
-
 
 # Returns true if the player can make a move or not
 # This is determined by checking if the board has an
@@ -435,82 +463,75 @@ if __name__ == "__main__":
         move = input(
             "Please enter your move (format row-column-flip_column): ")
 
-        #Human player quits the game
-        if move.lower() == 'q':
-            if algorithm_player == 'R':
-                print("\nRed wins")
+        correct_user_format, valid_move = check_user_input(move)
+
+        while valid_move == False:
+            if correct_user_format == False:
+                print("Illegal input format")
             else:
-                print("\nYellow wins")
-
-            status = False
-        else:
-
+                print("Valid input format. Illegal move")
+                
+            move = input("Please enter your move (format row-column-flip_column): ")
+                
+            
             correct_user_format, valid_move = check_user_input(move)
 
-            while valid_move == False:
-                if correct_user_format == False:
-                    print("Illegal input format")
-                else:
-                    print("Valid input format. Illegal move")
-                
-                move = input("Please enter your move (format row-column-flip_column): ")
-                
-                correct_user_format, valid_move = check_user_input(move)
+        # If we made it this far, the user input move is valid
 
-                # If we made it this far, the user input move is valid
+        # Print statements for debugging
+        # player_color = ""
+        # if player.upper() == "R":
+        #     player_color = "Red"
+        # else:
+        #     player_color = "Yellow"
+        # print(player_color, "moves", move)
 
-            # Print statements for debugging
-            # player_color = ""
-            # if player.upper() == "R":
-            #     player_color = "Red"
-            # else:
-            #     player_color = "Yellow"
-            # print(player_color, "moves", move)
+        # Algorithm calculating the best move goes here
+        # algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin = 0
 
-            # Algorithm calculating the best move goes here
-            # algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin = 0
+        # Process the moves of the player and algorithm, 
+        # depending on which color the player is
 
-            # Process the moves of the player and algorithm, 
-            # depending on which color the player is
-            move_list = move.split("-")
+        move_list = move.split("-")
 
-            user_row_to_move, user_column_to_move, user_column_to_spin = convert_user_move_to_function_variables(
-            move_list[0], move_list[1], move_list[2])
+        user_row_to_move, user_column_to_move, user_column_to_spin = convert_user_move_to_function_variables(
+        move_list[0], move_list[1], move_list[2])
 
-            if player.upper() == "R":
-                process_move(user_row_to_move, user_column_to_move,
+        if player.upper() == "R":
+            process_move(user_row_to_move, user_column_to_move,
                                  user_column_to_spin, "R")
                 # process_move(algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin, "Y")
-            else:
-                process_move(user_row_to_move, user_column_to_move,
+        else:
+            process_move(user_row_to_move, user_column_to_move,
                                  user_column_to_spin, "Y")
                 # process_move(algorithm_row_to_move, algorithm_column_to_move, algorithm_column_to_spin, "R")
 
-            # evaluate the board
-            score, four_in_a_row_found = evaluate()
+        # evaluate the board
+        score, four_in_a_row_found = evaluate()
 
-            # if Red wins
-            if score >= 10 and four_in_a_row_found:
-                print_board_progress()
-                print("Red wins")
-                status = False
-            # if Yellow wins
-            elif score <= -10 and four_in_a_row_found:
-                print_board_progress()
-                print("Yellow wins")
-                status = False
+        # if Red wins
+        if score >= 10 and four_in_a_row_found:
+            print_board_progress()
+            print("Red wins")
+            status = False
+        
+        # if Yellow wins
+        elif score <= -10 and four_in_a_row_found:
+            print_board_progress()
+            print("Yellow wins")
+            status = False
                 
-            # if both players obtain an equal number of 4 in a rows
-            # OR if no more moves can be made, game is a draw
-            elif (score == 0 and four_in_a_row_found) or not any_possible_moves():
-                print_board_progress()
-                print("Draw")
-                status = False
+        # if both players obtain an equal number of 4 in a rows
+        # OR if no more moves can be made, game is a draw
+        elif (score == 0 and four_in_a_row_found) or not any_possible_moves():
+            print_board_progress()
+            print("Draw")
+            status = False
 
-            if not status:
-                depth = 1
-                if player.upper() == "Y":
-                    depth += 1
+        if not status:
+            depth = 1
+            if player.upper() == "Y":
+                depth += 1
                     
-                score, calculated_row, caluclated_column, calculated_spin = minimax(board_squares, depth, algorithm_player, -sys.maxsize - 1, sys.maxsize)
-                process_move(calculated_row, caluclated_column, calculated_spin, algorithm_player)
+            score, calculated_row, caluclated_column, calculated_spin = minimax(board_squares, depth, algorithm_player, -sys.maxsize - 1, sys.maxsize)
+            process_move(calculated_row, caluclated_column, calculated_spin, algorithm_player)
